@@ -39,24 +39,24 @@ class SessionGoogle:
     def get(self, URL):
         return self.ses.get(URL).text.encode('utf-8')
 
-if if __name__ == '__main__':
-	session = SessionGoogle(url_login, url_auth, google_account, google_password)
-	content = session.get("https://scholar.google.com/")
-	for i in xrange(max_pages):
-		ii = i*10
-		page_url = "https://scholar.google.com/scholar?start=%d&hl=en&as_sdt=0,5&scilib=1"%ii
-		con = session.get(page_url)
-		p = re.compile("return gs_ocit\(event,'(\w+)'")
-		allinfos = p.findall(con)
-		for pinfo in allinfos:
-			pinfo_url = "https://scholar.google.com/scholar?scila=%s&output=cite&hl=en"%pinfo
-			pinfo_con = session.get(pinfo_url)
-			p = re.compile("(https://scholar.googleusercontent.com/.+?)\">BibTeX<")
-			bib_url = p.findall(pinfo_con)
-			if len(bib_url) < 1:
-				#print "Cannot find BibTeX of the paper"
-				continue
-			bib_url = bib_url[0].replace('&amp;','&')
-			bib_con = session.get(bib_url)
-			# Output the BibTex of each paper
-			print bib_con
+if __name__ == '__main__':
+    session = SessionGoogle(url_login, url_auth, google_account, google_password)
+    content = session.get("https://scholar.google.com/")
+    for i in xrange(max_pages):
+	ii = i*10
+	page_url = "https://scholar.google.com/scholar?start=%d&hl=en&as_sdt=0,5&scilib=1"%ii
+	con = session.get(page_url)
+	p = re.compile("return gs_ocit\(event,'(\w+)'")
+	allinfos = p.findall(con)
+	for pinfo in allinfos:
+		pinfo_url = "https://scholar.google.com/scholar?scila=%s&output=cite&hl=en"%pinfo
+		pinfo_con = session.get(pinfo_url)
+		p = re.compile("(https://scholar.googleusercontent.com/.+?)\">BibTeX<")
+		bib_url = p.findall(pinfo_con)
+		if len(bib_url) < 1:
+			#print "Cannot find BibTeX of the paper"
+			continue
+		bib_url = bib_url[0].replace('&amp;','&')
+		bib_con = session.get(bib_url)
+		# Output the BibTex of each paper
+		print bib_con
