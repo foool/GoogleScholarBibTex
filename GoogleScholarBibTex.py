@@ -48,6 +48,8 @@ if __name__ == '__main__':
 	con = session.get(page_url)
 	p = re.compile("return gs_ocit\(event,'(\w+)'")
 	allinfos = p.findall(con)
+	if len(allinfos) == 0:
+		exit()
 	for pinfo in allinfos:
 		pinfo_url = "https://scholar.google.com/scholar?scila=%s&output=cite&hl=en"%pinfo
 		pinfo_con = session.get(pinfo_url)
