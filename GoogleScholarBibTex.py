@@ -22,14 +22,17 @@ url_auth = "https://accounts.google.com/ServiceLoginAuth"
 # maximum pages in your library
 max_pages = 100	
 
+myheaders = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) \
+AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'} 
+
 class SessionGoogle:
     def __init__(self, url_login, url_auth, login, pwd):
         self.ses = requests.session()
-        login_html = self.ses.get(url_login)
+        login_html = self.ses.get(url_login, headers = myheaders)
         soup_login = BeautifulSoup(login_html.content, 'html.parser').find('form').find_all('input')
         dico = {}
         for u in soup_login:
-            if u.has_attr('value'):
+            if u.has_attr('value') and u['value'] != "":
                 dico[u['name']] = u['value']
         # override the inputs with out login and pwd:
         dico['Email'] = login
